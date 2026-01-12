@@ -103,6 +103,19 @@ const App: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
+
   const toggleFAQ = (id: number) => {
     setOpenFAQ(openFAQ === id ? null : id);
   };
@@ -120,7 +133,7 @@ const App: React.FC = () => {
       {/* Mobile Menu Backdrop */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden animate-in fade-in duration-300"
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden animate-fade-in"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
@@ -147,7 +160,7 @@ const App: React.FC = () => {
 
         {/* Mobile Menu Overlay */}
         {isMobileMenuOpen && (
-          <div className="absolute top-full left-0 w-full bg-slate-900 border-b border-slate-800 p-6 flex flex-col gap-4 md:hidden shadow-2xl animate-in slide-in-from-top-2">
+          <div className="absolute top-full left-0 w-full bg-slate-900 border-b border-slate-800 p-6 flex flex-col gap-4 md:hidden shadow-2xl animate-slide-down">
             <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-200 font-semibold py-2">Módulos</a>
             <a href="#testimonials" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-200 font-semibold py-2">Depoimentos</a>
             <Button variant="primary" fullWidth onClick={() => { setIsMobileMenuOpen(false); scrollToCheckout(); }}>

@@ -6,7 +6,18 @@ import {
   Brain, 
   CheckCircle,
   Menu,
-  X
+  X,
+  Star,
+  Sparkles,
+  Clock,
+  Gift,
+  CreditCard,
+  Lock,
+  ArrowRight,
+  Play,
+  Users,
+  Award,
+  BookOpen
 } from 'lucide-react';
 import { Button } from './components/Button';
 import { FeatureCard } from './components/FeatureCard';
@@ -90,6 +101,12 @@ const FAQS: FAQItem[] = [
   }
 ];
 
+const BONUSES = [
+  { icon: BookOpen, title: "Planilha de Orçamento", description: "A mesma planilha que uso pessoalmente" },
+  { icon: Play, title: "3 Aulas Bônus em Vídeo", description: "Conteúdo exclusivo não disponível em nenhum outro lugar" },
+  { icon: Users, title: "Acesso ao Grupo VIP", description: "Comunidade exclusiva de investidores" },
+];
+
 const App: React.FC = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -103,7 +120,6 @@ const App: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -128,53 +144,68 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 font-sans selection:bg-neon selection:text-slate-950 overflow-x-hidden">
+    <div className="min-h-screen bg-[#0a0a0f] font-sans selection:bg-neon selection:text-slate-950 overflow-x-hidden noise">
       
       {/* Mobile Menu Backdrop */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden animate-fade-in"
+          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-md md:hidden animate-fade-in"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
-      {/* 1. Sticky Navbar */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled || isMobileMenuOpen ? 'bg-slate-950/90 backdrop-blur-md border-b border-white/5 py-3' : 'bg-transparent py-5'}`}>
+      {/* Sticky Navbar */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled || isMobileMenuOpen ? 'glass-strong py-3 border-b border-white/5' : 'bg-transparent py-5'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="text-xl md:text-2xl font-black italic tracking-tighter text-white">
-            Felipe<span className="text-neon">.Inv</span>
+            Felipe<span className="text-gradient">.Inv</span>
           </div>
           
-          <div className="hidden md:flex items-center gap-6">
-            <a href="#features" className="text-sm font-semibold text-slate-300 hover:text-white transition-colors">O que você aprende</a>
-            <a href="#testimonials" className="text-sm font-semibold text-slate-300 hover:text-white transition-colors">Resultados</a>
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#features" className="text-sm font-medium text-slate-400 hover:text-white transition-colors relative group">
+              O que você aprende
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-neon group-hover:w-full transition-all duration-300"></span>
+            </a>
+            <a href="#testimonials" className="text-sm font-medium text-slate-400 hover:text-white transition-colors relative group">
+              Resultados
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-neon group-hover:w-full transition-all duration-300"></span>
+            </a>
             <Button variant="primary" size="sm" onClick={scrollToCheckout}>
+              <Sparkles className="w-4 h-4" />
               Garantir Acesso
             </Button>
           </div>
 
-          <button className="md:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-            {isMobileMenuOpen ? <X /> : <Menu />}
+          <button className="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
-        {/* Mobile Menu Overlay */}
+        {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="absolute top-full left-0 w-full bg-slate-900 border-b border-slate-800 p-6 flex flex-col gap-4 md:hidden shadow-2xl animate-slide-down">
-            <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-200 font-semibold py-2">Módulos</a>
-            <a href="#testimonials" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-200 font-semibold py-2">Depoimentos</a>
+          <div className="absolute top-full left-0 w-full glass-strong border-b border-white/5 p-6 flex flex-col gap-4 md:hidden animate-slide-down">
+            <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-200 font-semibold py-3 px-4 hover:bg-white/5 rounded-lg transition-colors">Módulos</a>
+            <a href="#testimonials" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-200 font-semibold py-3 px-4 hover:bg-white/5 rounded-lg transition-colors">Depoimentos</a>
+            <a href="#checkout" onClick={() => setIsMobileMenuOpen(false)} className="text-slate-200 font-semibold py-3 px-4 hover:bg-white/5 rounded-lg transition-colors">Comprar</a>
             <Button variant="primary" fullWidth onClick={() => { setIsMobileMenuOpen(false); scrollToCheckout(); }}>
+              <Sparkles className="w-4 h-4" />
               GARANTIR ACESSO
             </Button>
           </div>
         )}
       </nav>
 
-      {/* 2. Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-20 lg:pt-44 lg:pb-32 overflow-hidden bg-grid">
         {/* Abstract Background Elements */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-neon/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-indigo-500/10 rounded-full blur-[100px]" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-neon/20 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/3 animate-pulse" />
+        <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-purple/20 rounded-full blur-[120px] -translate-x-1/2 animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-gold/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
+        
+        {/* Floating Orbs */}
+        <div className="absolute top-40 left-[10%] w-2 h-2 bg-neon rounded-full animate-float opacity-60" />
+        <div className="absolute top-60 right-[15%] w-3 h-3 bg-purple rounded-full animate-float opacity-40" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-40 left-[20%] w-2 h-2 bg-gold rounded-full animate-float opacity-50" style={{ animationDelay: '2s' }} />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -182,64 +213,103 @@ const App: React.FC = () => {
             {/* Left: Content */}
             <div className="flex-1 text-center lg:text-left">
               <FadeIn delay={100}>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neon/10 border border-neon/20 text-neon text-xs font-bold uppercase tracking-wider mb-6">
-                  <CheckCircle className="w-3 h-3" /> Método Validado
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-neon/30 text-neon text-xs font-bold uppercase tracking-wider mb-6 animate-glow">
+                  <Sparkles className="w-4 h-4" />
+                  <span>+2.500 Alunos Transformados</span>
                 </div>
               </FadeIn>
               
               <FadeIn delay={200}>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-[1.1]">
-                  Pare de trabalhar <br className="hidden md:block"/> pelo dinheiro. <br/>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon via-emerald-200 to-white">
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-[1.05]">
+                  Pare de trabalhar <br className="hidden md:block"/>pelo dinheiro. <br/>
+                  <span className="text-gradient">
                     Faça o dinheiro trabalhar por você.
                   </span>
                 </h1>
               </FadeIn>
               
               <FadeIn delay={300}>
-                <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto lg:mx-0">
-                  O método definitivo para atingir a independência financeira antes dos 30, sem precisar ser um gênio da matemática ou herdeiro.
+                <p className="text-lg md:text-xl text-slate-400 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                  O método definitivo para atingir a <span className="text-white font-semibold">independência financeira antes dos 30</span>, sem precisar ser um gênio da matemática ou herdeiro.
                 </p>
               </FadeIn>
 
               <FadeIn delay={400}>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-6">
                   <Button 
                     variant="primary" 
                     size="xl" 
-                    pulse 
                     onClick={scrollToCheckout}
-                    className="shadow-[0_0_40px_rgba(52,211,153,0.3)]"
+                    className="glow-neon animate-pulse-ring"
                   >
-                    QUERO MINHA LIBERDADE AGORA
+                    QUERO MINHA LIBERDADE
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </div>
-                <p className="mt-4 text-xs text-slate-500 flex items-center justify-center lg:justify-start gap-2">
-                  <ShieldCheck className="w-4 h-4" /> Compra segura e acesso imediato
-                </p>
+                
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-slate-500">
+                  <span className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-neon" />
+                    Garantia de 7 dias
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-gold" />
+                    Acesso imediato
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <Lock className="w-4 h-4 text-purple" />
+                    Compra segura
+                  </span>
+                </div>
               </FadeIn>
             </div>
 
             {/* Right: Book 3D Mockup */}
-            <div className="flex-1 w-full max-w-md lg:max-w-full flex justify-center perspective-1000">
+            <div className="flex-1 w-full max-w-md lg:max-w-lg flex justify-center">
               <FadeIn delay={500} className="w-full flex justify-center">
-                <div className="relative w-64 md:w-80 aspect-[2/3] animate-float">
-                  {/* Glow behind book */}
-                  <div className="absolute inset-0 bg-neon rounded-lg blur-[50px] opacity-20 transform scale-110 translate-y-4" />
+                <div className="relative w-72 md:w-80 aspect-[2/3] animate-float">
+                  {/* Glow rings */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-neon via-purple to-neon rounded-2xl blur-[60px] opacity-30 animate-pulse" />
+                  <div className="absolute inset-4 bg-gradient-to-br from-purple to-neon rounded-2xl blur-[40px] opacity-20 animate-pulse" style={{ animationDelay: '0.5s' }} />
+                  
                   {/* Book Cover */}
-                  <div className="relative w-full h-full bg-slate-900 rounded-r-2xl rounded-l-sm shadow-2xl border-l-4 border-slate-700 overflow-hidden transform rotate-y-[-15deg] rotate-x-[5deg]">
-                    <img 
-                      src="https://images.unsplash.com/photo-1611974765270-ca1258634369?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                      alt="Capa do E-book" 
-                      className="w-full h-full object-cover opacity-80 mix-blend-overlay"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-900/50" />
-                    <div className="absolute bottom-8 left-6 right-6">
-                      <p className="text-neon text-sm font-bold tracking-widest uppercase mb-1">E-book Oficial</p>
-                      <h2 className="text-3xl font-black text-white leading-tight">INDEPENDÊNCIA <br/> FINANCEIRA <br/> AOS 30</h2>
+                  <div className="relative w-full h-full rounded-r-2xl rounded-l-sm shadow-2xl overflow-hidden transform perspective-1000 rotate-y-[-5deg] hover:rotate-y-[0deg] transition-transform duration-500 group">
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
+                    
+                    {/* Pattern overlay */}
+                    <div className="absolute inset-0 bg-grid opacity-20" />
+                    
+                    {/* Shine effect on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                    
+                    {/* Spine */}
+                    <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-800 border-r border-slate-600" />
+                    
+                    {/* Content */}
+                    <div className="absolute inset-0 p-8 flex flex-col justify-between">
+                      <div>
+                        <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-neon/20 border border-neon/30 text-neon text-[10px] font-bold uppercase tracking-widest mb-4">
+                          <Award className="w-3 h-3" />
+                          Best-Seller
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <p className="text-neon text-xs font-bold tracking-widest uppercase mb-2">E-book Oficial</p>
+                        <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-4">
+                          INDEPENDÊNCIA<br/>FINANCEIRA<br/>AOS 30
+                        </h2>
+                        <div className="w-16 h-1 bg-gradient-to-r from-neon to-purple rounded-full" />
+                      </div>
+                      
+                      <div className="text-slate-400 text-sm font-medium">
+                        Por Felipe Investimentos
+                      </div>
                     </div>
-                    {/* Spine Highlight */}
-                    <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-r from-white/20 to-transparent" />
+                    
+                    {/* Corner accent */}
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-neon/30 to-transparent" />
                   </div>
                 </div>
               </FadeIn>
@@ -247,48 +317,93 @@ const App: React.FC = () => {
 
           </div>
         </div>
+        
+        {/* Stats Bar */}
+        <div className="container mx-auto px-6 mt-20">
+          <FadeIn delay={600}>
+            <div className="glass rounded-2xl p-6 md:p-8 border border-white/5">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl font-black text-gradient mb-1">2.5K+</div>
+                  <div className="text-sm text-slate-400">Alunos</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl font-black text-gradient-gold mb-1">4.9</div>
+                  <div className="text-sm text-slate-400 flex items-center justify-center gap-1">
+                    <Star className="w-3 h-3 fill-gold text-gold" />
+                    Avaliação
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl font-black text-gradient mb-1">150+</div>
+                  <div className="text-sm text-slate-400">Páginas</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl font-black text-gradient-gold mb-1">7</div>
+                  <div className="text-sm text-slate-400">Dias de garantia</div>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
       </section>
 
-      {/* 3. Features Section */}
-      <section id="features" className="py-20 bg-slate-950 relative">
-        <div className="container mx-auto px-6">
+      {/* Features Section - Bento Grid */}
+      <section id="features" className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-slate-900/50 to-[#0a0a0f]" />
+        
+        <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <FadeIn>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-purple/30 text-purple text-xs font-bold uppercase tracking-wider mb-6">
+                <BookOpen className="w-4 h-4" />
+                Conteúdo Completo
+              </div>
+            </FadeIn>
+            <FadeIn delay={100}>
               <h2 className="text-3xl md:text-5xl font-black text-white mb-6">
-                O Que Você Vai <span className="text-neon">Dominar</span>
+                O Que Você Vai <span className="text-gradient">Dominar</span>
               </h2>
             </FadeIn>
             <FadeIn delay={200}>
-              <p className="text-slate-400 max-w-xl mx-auto">
+              <p className="text-slate-400 max-w-xl mx-auto text-lg">
                 Chega de teoria chata. Aqui você vai encontrar o caminho prático para construir riqueza real.
               </p>
             </FadeIn>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {FEATURES.map((feature, idx) => (
-              <FadeIn key={feature.id} delay={idx * 150} className="h-full">
-                <FeatureCard feature={feature} />
+              <FadeIn key={feature.id} delay={idx * 100} className="h-full">
+                <FeatureCard feature={feature} index={idx} />
               </FadeIn>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 4. Social Proof Section */}
-      <section id="testimonials" className="py-20 bg-slate-900 border-y border-slate-800">
-        <div className="container mx-auto px-6">
+      {/* Social Proof Section */}
+      <section id="testimonials" className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-purple/5 to-[#0a0a0f]" />
+        
+        <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <FadeIn>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-gold/30 text-gold text-xs font-bold uppercase tracking-wider mb-6">
+                <Users className="w-4 h-4" />
+                Histórias Reais
+              </div>
+            </FadeIn>
+            <FadeIn delay={100}>
               <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
-                Quem Aplicou, <span className="text-gold">Mudou de Vida</span>
+                Quem Aplicou, <span className="text-gradient-gold">Mudou de Vida</span>
               </h2>
             </FadeIn>
           </div>
           
-          <div className="flex flex-col md:flex-row gap-8 overflow-x-auto pb-4 md:pb-0 scrollbar-hide snap-x">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {TESTIMONIALS.map((testimonial, idx) => (
-              <FadeIn key={testimonial.id} delay={idx * 150} className="flex-shrink-0 w-full md:w-auto md:flex-1 flex">
+              <FadeIn key={testimonial.id} delay={idx * 150} className="h-full">
                 <TestimonialCard testimonial={testimonial} />
               </FadeIn>
             ))}
@@ -296,54 +411,160 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. FAQ Section */}
-      <section className="py-20 bg-slate-950">
+      {/* Pricing Section */}
+      <section id="checkout" className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-neon/5 to-[#0a0a0f]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon/10 rounded-full blur-[150px]" />
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto">
+              <div className="glass rounded-3xl p-8 md:p-12 border border-neon/20 relative overflow-hidden">
+                {/* Corner accent */}
+                <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-neon/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-tr from-purple/20 to-transparent" />
+                
+                <div className="relative">
+                  {/* Badge */}
+                  <div className="flex justify-center mb-8">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/20 border border-gold/30 text-gold text-sm font-bold animate-pulse">
+                      <Clock className="w-4 h-4" />
+                      Oferta por tempo limitado
+                    </div>
+                  </div>
+                  
+                  {/* Title */}
+                  <h2 className="text-3xl md:text-4xl font-black text-white text-center mb-4">
+                    Garanta Seu Acesso <span className="text-gradient">Agora</span>
+                  </h2>
+                  
+                  <p className="text-slate-400 text-center mb-8 max-w-lg mx-auto">
+                    Invista em você e comece sua jornada rumo à independência financeira hoje mesmo.
+                  </p>
+                  
+                  {/* Price */}
+                  <div className="text-center mb-8">
+                    <div className="flex items-center justify-center gap-3 mb-2">
+                      <span className="text-2xl text-slate-500 line-through">R$ 197</span>
+                      <span className="px-3 py-1 rounded-full bg-neon/20 text-neon text-sm font-bold">-75%</span>
+                    </div>
+                    <div className="text-6xl md:text-7xl font-black text-white mb-2">
+                      R$ <span className="text-gradient">47</span>
+                    </div>
+                    <p className="text-slate-400 text-sm">ou 4x de R$ 12,25 sem juros</p>
+                  </div>
+                  
+                  {/* Bonuses */}
+                  <div className="mb-8">
+                    <p className="text-center text-white font-bold mb-4 flex items-center justify-center gap-2">
+                      <Gift className="w-5 h-5 text-gold" />
+                      Bônus Exclusivos Inclusos:
+                    </p>
+                    <div className="grid gap-3">
+                      {BONUSES.map((bonus, idx) => (
+                        <div key={idx} className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
+                          <div className="p-2 rounded-lg bg-neon/10">
+                            <bonus.icon className="w-5 h-5 text-neon" />
+                          </div>
+                          <div>
+                            <div className="font-semibold text-white">{bonus.title}</div>
+                            <div className="text-sm text-slate-400">{bonus.description}</div>
+                          </div>
+                          <CheckCircle className="w-5 h-5 text-neon ml-auto flex-shrink-0" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* CTA Button */}
+                  <Button 
+                    variant="primary" 
+                    size="xl" 
+                    fullWidth
+                    className="glow-neon mb-6"
+                    onClick={() => console.log('Checkout')}
+                  >
+                    <CreditCard className="w-5 h-5" />
+                    QUERO GARANTIR MINHA VAGA
+                    <ArrowRight className="w-5 h-5" />
+                  </Button>
+                  
+                  {/* Trust badges */}
+                  <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-slate-500">
+                    <span className="flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-neon" />
+                      Garantia 7 dias
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <Lock className="w-4 h-4 text-neon" />
+                      Pagamento seguro
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <Zap className="w-4 h-4 text-neon" />
+                      Acesso imediato
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 relative">
         <div className="container mx-auto px-6 max-w-3xl">
           <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-12 text-center">
-              Dúvidas Frequentes
-            </h2>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
+                Dúvidas <span className="text-gradient">Frequentes</span>
+              </h2>
+            </div>
           </FadeIn>
           
-          <div className="space-y-2 bg-slate-900/50 p-6 md:p-10 rounded-3xl border border-slate-800">
-            {FAQS.map((faq, idx) => (
-              <FadeIn key={faq.id} delay={idx * 100}>
+          <FadeIn delay={100}>
+            <div className="glass rounded-3xl p-6 md:p-10 border border-white/5">
+              {FAQS.map((faq, idx) => (
                 <AccordionItem 
+                  key={faq.id}
                   item={faq} 
                   isOpen={openFAQ === faq.id}
                   onClick={() => toggleFAQ(faq.id)}
                 />
-              </FadeIn>
-            ))}
-          </div>
+              ))}
+            </div>
+          </FadeIn>
         </div>
       </section>
 
-      {/* 6. Footer & Sticky CTA Mobile */}
-      <footer className="bg-slate-950 border-t border-slate-900 pt-16 pb-32 md:pb-16">
-        <div className="container mx-auto px-6 text-center">
-          <FadeIn>
-            <div className="text-2xl font-black italic tracking-tighter text-slate-600 mb-6">
-              Felipe<span className="text-slate-500">.Inv</span>
+      {/* Footer */}
+      <footer className="relative border-t border-white/5 pt-16 pb-32 md:pb-16">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-12">
+            <div className="text-2xl font-black italic tracking-tighter text-white">
+              Felipe<span className="text-gradient">.Inv</span>
             </div>
-            <div className="flex justify-center gap-8 mb-8 text-sm text-slate-500 font-medium">
+            
+            <div className="flex gap-8 text-sm text-slate-500 font-medium">
               <a href="#" className="hover:text-neon transition-colors">Termos de Uso</a>
               <a href="#" className="hover:text-neon transition-colors">Privacidade</a>
-              <a href="#" className="hover:text-neon transition-colors">Sobre</a>
+              <a href="#" className="hover:text-neon transition-colors">Contato</a>
             </div>
-            <p className="text-slate-700 text-xs">
-              © {new Date().getFullYear()} Felipe Investimentos. Todos os direitos reservados.
-              <br />
-              Este site não faz parte do site do Facebook ou Facebook Inc.
-            </p>
-          </FadeIn>
+          </div>
+          
+          <div className="text-center text-slate-600 text-xs">
+            <p className="mb-2">© {new Date().getFullYear()} Felipe Investimentos. Todos os direitos reservados.</p>
+            <p>Este site não faz parte do site do Facebook ou Facebook Inc.</p>
+          </div>
         </div>
       </footer>
 
       {/* Sticky Mobile CTA */}
-      <div id="checkout" className="fixed bottom-0 left-0 w-full p-4 bg-slate-900/95 backdrop-blur-xl border-t border-neon/30 z-50 md:hidden shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
-        <Button variant="primary" fullWidth size="lg" pulse onClick={() => console.log('Checkout Clicked')}>
-          QUERO MINHA LIBERDADE AGORA
+      <div className="fixed bottom-0 left-0 w-full p-4 glass-strong border-t border-neon/30 z-50 md:hidden">
+        <Button variant="primary" fullWidth size="lg" onClick={scrollToCheckout}>
+          <Sparkles className="w-4 h-4" />
+          GARANTIR MINHA VAGA
+          <ArrowRight className="w-4 h-4" />
         </Button>
       </div>
 

@@ -18,7 +18,7 @@ export const FadeIn: React.FC<FadeInProps> = ({ children, className = "", delay 
           if (domRef.current) observer.unobserve(domRef.current);
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.1, rootMargin: '50px' });
 
     const currentElement = domRef.current;
     if (currentElement) {
@@ -35,9 +35,10 @@ export const FadeIn: React.FC<FadeInProps> = ({ children, className = "", delay 
   return (
     <div
       ref={domRef}
-      className={`transition-all duration-700 ease-out transform ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-      } ${className}`}
+      className={`transition-all duration-700 ease-out ${isVisible
+          ? 'opacity-100 translate-y-0 blur-0'
+          : 'opacity-0 translate-y-8 blur-sm'
+        } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}

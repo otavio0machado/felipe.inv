@@ -1,19 +1,25 @@
 import React from 'react';
-import { LucideIcon } from 'lucide-react';
 
-export interface FeatureItem {
-  id: number;
+export interface Chapter {
+  num: string;
   title: string;
-  description: string;
-  icon: LucideIcon;
+  pages: string;
+  preview: string;
 }
 
-export interface TestimonialItem {
-  id: number;
+export interface SpreadsheetRow {
+  year: string;
+  income: string;
+  invested: string;
+  total: string;
+  note?: string;
+}
+
+export interface ReaderNote {
   name: string;
-  role: string;
-  content: string;
-  image: string;
+  context: string;
+  applied: string;
+  text: string;
 }
 
 export interface FAQItem {
@@ -23,9 +29,8 @@ export interface FAQItem {
 }
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  variant?: 'primary' | 'ghost' | 'mark';
   fullWidth?: boolean;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-  pulse?: boolean;
+  size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
 }
